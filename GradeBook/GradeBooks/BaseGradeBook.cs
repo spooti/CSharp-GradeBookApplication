@@ -4,6 +4,7 @@ using System.Linq;
 using GradeBook.Enums;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection.Metadata.Ecma335;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -109,16 +110,21 @@ namespace GradeBook.GradeBooks
 
         public virtual double GetGPA(char letterGrade, StudentType studentType)
         {
+            var addWeight = 0;
+            if (IsWeighted && (studentType == StudentType.Honors || studentType == StudentType.DualEnrolled))
+            {
+                addWeight = 1;
+            }
             switch (letterGrade)
             {
                 case 'A':
-                    return 4;
+                    return 4 + addWeight;
                 case 'B':
-                    return 3;
+                    return 3 + addWeight;
                 case 'C':
-                    return 2;
+                    return 2 + addWeight;
                 case 'D':
-                    return 1;
+                    return 1 + addWeight;
             }
             return 0;
         }
